@@ -11,12 +11,14 @@ const {
     updateUser, 
     deleteUser 
 } = require('../controllers/user.controller.js'); 
+const { protect, admin } = require('../middleware/auth.middleware.js');
 
+router.route('/').get(protect, admin, getUsers);
 // Define User routes
-router.get('/', getUsers);
+//router.get('/', protect, admin, getUsers);
 router.get('/:id', getUser);
 router.post('/', createUser);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
-
+router.put('/:id', protect, admin, updateUser);
+router.delete('/:id', protect, admin, deleteUser);
+router.get('/profile', protect, (req, res) => res.json(req.user));
 module.exports = router;
