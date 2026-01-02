@@ -7,8 +7,8 @@ const generateToken = (userId) => {
 
 const register = async (req, res) => {
     try {
-        const { username, email, password } = req.body;
-        const user = await User.create({ username, email, password });
+        const { username, email, password, role } = req.body;
+        const user = await User.create({ username, email, password, role });
         const token = generateToken(user._id);
         
         res.cookie('token', token, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 * 1000 });
@@ -34,5 +34,9 @@ const login = async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 };
+const logout = (req, res) => {
+    res.cookie('token', '', { httpOnly: true, expires: new Date(0) });
+    res.status(200).json({ message: 'Logged out successfully' });
+};
 
-module.exports = { register, login };
+module.exports = { register, login, logout };

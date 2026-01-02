@@ -1,5 +1,5 @@
 const                    
-   Product = require('../models/movie.model');
+   Movie = require('../models/movie.model');
 const { z } = require('zod');
 
 const productSchema = z.object({
